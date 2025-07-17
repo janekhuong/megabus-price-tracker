@@ -27,4 +27,4 @@ Thumbs.db
 .streamlit/secrets.toml
 
 # Firebase credentials
-firebase/firebase-key.json
+firebase-key.json
