@@ -1,8 +1,9 @@
 import streamlit as st
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, auth
 from datetime import date
 from locations import city_to_id
+from auth import login
 
 if not firebase_admin._apps:
     cred = credentials.Certificate(st.secrets["firebase"])
@@ -77,6 +78,28 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+if "user" not in st.session_state:
+    st.session_state.user = None
+
+if st.session_state.user is None:
+    st.title("🔐 Login")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        user_data = login(
+            email, password, st.secrets["firebase_api_key"]
+        )
+        if user_data:
+            st.session_state.user = user_data
+            st.success("Logged in!")
+            st.experimental_rerun()
+        else:
+            st.error("Invalid email or password")
+    st.stop()
+else:
+    st.success(f"Welcome {st.session_state.user['email']}")
 
 if not st.session_state.submitted:
 
