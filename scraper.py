@@ -75,5 +75,5 @@ tickets = find_tickets(
     total_passengers=1,
     max_price=100,
 )
-for t in tickets:
-    print(f"{t['date']}: ${t['price']} | {t['departureTime']} → {t['arrivalTime']}")
+# for t in tickets:
+#     print(f"{t['date']}: ${t['price']} | {t['departureTime']} → {t['arrivalTime']}")
