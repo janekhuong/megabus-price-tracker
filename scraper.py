@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from locations import city_to_id
 
 def find_tickets(
-    origin_id, destination_id, start_date, end_date, total_passengers=1, max_price=None
+    origin_id, destination_id, start_date, end_date, total_passengers=1, min_price=None, max_price=None
 ):
     url = "https://ca.megabus.com/journey-planner/api/journeys"
     headers = {
@@ -40,15 +40,19 @@ def find_tickets(
 
             for journey in data.get("journeys", []):
                 price_info = journey.get("price")
-                if isinstance(price_info, dict):
-                    price = price_info.get("total")
-                else:
-                    price = price_info
+                price = (
+                    price_info.get("total")
+                    if isinstance(price_info, dict)
+                    else price_info
+                )
 
                 if price is None:
                     continue
 
-                if max_price is None or price <= max_price:
+                # filter by min and max price
+                if (min_price is None or price >= min_price) and (
+                    max_price is None or price <= max_price
+                ):
                     results.append(
                         {
                             "date": departure_str,
@@ -64,16 +68,3 @@ def find_tickets(
         current_date += timedelta(days=1)
 
     return results
-
-
-# Toronto (145) → Montreal (280), from July 16 to 18, max $30
-tickets = find_tickets(
-    origin_id=city_to_id["Toronto, ON"],
-    destination_id=city_to_id["Montreal, QC"],
-    start_date="2025-07-16",
-    end_date="2025-07-18",
-    total_passengers=1,
-    max_price=100,
-)
-# for t in tickets:
-#     print(f"{t['date']}: ${t['price']} | {t['departureTime']} → {t['arrivalTime']}")

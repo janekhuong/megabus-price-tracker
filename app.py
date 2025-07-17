@@ -2,7 +2,33 @@ import streamlit as st
 from datetime import date
 from scraper import find_tickets
 from locations import city_to_id
-from emails import test_email_send
+import json
+import subprocess
+
+
+def save_tracking_config(origin, destination, start_date, end_date, passengers, min_price, max_price, email):
+
+    new_entry = {
+        "origin": origin,
+        "destination": destination,
+        "start_date": str(start_date), 
+        "end_date": str(end_date),
+        "passengers": passengers,
+        "min_price": min_price,
+        "max_price": max_price,
+        "email": email,
+    }
+
+    try:
+        with open("trackers.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        data = []
+
+    data.append(new_entry)
+
+    with open("trackers.json", "w") as f:
+        json.dump(data, f, indent=2)
 
 st.set_page_config(page_title="Megabus Price Tracker", layout="centered")
 
@@ -88,16 +114,14 @@ if not st.session_state.submitted:
     col1, col2 = st.columns(2)
 
     with col1:
-        min_price = st.number_input("Min price", min_value=0.0, value=20.0, step=1.0)
+        min_price = st.number_input("Min price", min_value=0.0, step=1.0)
 
     with col2:
         max_price = st.number_input(
-            "Max price", min_value=min_price, value=100.0, step=1.0
+            "Max price", min_value=min_price, step=1.0
         )
 
-    # search
-
-    # st.markdown("<div style='padding-top: 20px;'></div>", unsafe_allow_html=True)
+    email = st.text_input("Email", placeholder="you@example.com")
 
     if st.button("Submit", use_container_width=True):
         if origin == "Enter a town or city":
@@ -109,8 +133,11 @@ if not st.session_state.submitted:
         elif origin == destination:
             st.warning("Origin and destination must be different.")
         else:
+            save_tracking_config(
+                origin, destination, date_range[0], date_range[1], total_passengers, min_price, max_price, email
+            )
+            subprocess.Popen(["python", "scraper_runner.py"])
             st.session_state.submitted = True
-            start 
             st.rerun()
 else:
     st.markdown(
