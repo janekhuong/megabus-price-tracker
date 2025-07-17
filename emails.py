@@ -1,10 +1,18 @@
 import os
+import logging
 from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText 
 from email.mime.multipart import MIMEMultipart
 
 load_dotenv()
+
+# set up basic logging configuration
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("info.log")],
+)
 
 def send_email(to_email, tickets):
     smtp_user = os.getenv("SES_SMTP_USER").strip()
@@ -30,7 +38,7 @@ def send_email(to_email, tickets):
     msg["From"] = from_email
     msg["To"] = to_email
     msg["Subject"] = subject
-    
+
     msg.attach(MIMEText(body, "plain"))
     msg.attach(MIMEText(html, "html"))
 
@@ -40,4 +48,4 @@ def send_email(to_email, tickets):
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, to_email, msg.as_string())
     except Exception as e:
-        print("❌ SES send error:", e)
+        logging.exception(f"SES send error:, {e}")

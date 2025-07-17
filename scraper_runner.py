@@ -1,4 +1,3 @@
-import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 from scraper import find_tickets
