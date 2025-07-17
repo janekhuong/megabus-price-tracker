@@ -63,3 +63,20 @@ def test_email_send():
         print("✅ Test email sent successfully.")
     except Exception as e:
         print("❌ Failed to send email:", e)
+
+
+# with st.spinner("Fetching tickets..."):
+#     tickets = find_tickets(
+#         origin_id=city_to_id[origin],
+#         destination_id=city_to_id[destination],
+#         start_date=str(date_range[0]),
+#         end_date=str(date_range[1]),
+#         total_passengers=total_passengers,
+#         max_price=max_price,
+#     )
+
+# if tickets:
+#     st.success(f"Found {len(tickets)} matching tickets!")
+#     st.dataframe(tickets)
+# else:
+#     st.error("No tickets found under your price limit.")
