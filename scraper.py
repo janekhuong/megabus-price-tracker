@@ -1,13 +1,6 @@
 import requests
-import logging
 from datetime import datetime, timedelta
-
-# set up basic logging configuration
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("info.log")],
-)
+from logging import log_event
 
 def find_tickets(
     origin_id, destination_id, start_date, end_date, total_passengers=1, min_price=None, max_price=None
@@ -70,7 +63,7 @@ def find_tickets(
                     )
 
         except Exception as e:
-            logging.exception(f"Failed to fetch {departure_str}: {e}")
+            log_event(f"Failed to fetch {departure_str}: {e}")
 
         current_date += timedelta(days=1)
 

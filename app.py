@@ -5,7 +5,7 @@ from datetime import date
 from locations import city_to_id
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate("firebase/firebase-key.json")
+    cred = credentials.Certificate(st.secrets["firebase"])
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
