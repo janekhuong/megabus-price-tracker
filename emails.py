@@ -39,6 +39,5 @@ def send_email(to_email, tickets):
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, to_email, msg.as_string())
-        print("✅ Email sent via Amazon SES")
     except Exception as e:
         print("❌ SES send error:", e)

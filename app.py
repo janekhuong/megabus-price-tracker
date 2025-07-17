@@ -1,15 +1,25 @@
 import streamlit as st
 import json
+import firebase_admin
+from firebase_admin import credentials, firestore
 from datetime import date
 from locations import city_to_id
 
+if not firebase_admin._apps:
+    cred = credentials.Certificate("firebase/firebase-key.json")
+    firebase_admin.initialize_app(cred)
+    
+db = firestore.client()
 
-def save_tracking_config(origin, destination, start_date, end_date, passengers, min_price, max_price, email):
 
-    new_entry = {
+def save_tracking_config(
+    origin, destination, start_date, end_date, passengers, min_price, max_price, email
+):
+
+    entry = {
         "origin": origin,
         "destination": destination,
-        "start_date": str(start_date), 
+        "start_date": str(start_date),
         "end_date": str(end_date),
         "passengers": passengers,
         "min_price": min_price,
@@ -17,16 +27,8 @@ def save_tracking_config(origin, destination, start_date, end_date, passengers, 
         "email": email,
     }
 
-    try:
-        with open("trackers.json", "r") as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        data = []
+    db.collection("trackers").add(entry)
 
-    data.append(new_entry)
-
-    with open("trackers.json", "w") as f:
-        json.dump(data, f, indent=2)
 
 st.set_page_config(page_title="Megabus Price Tracker", layout="centered")
 
@@ -94,16 +96,13 @@ if not st.session_state.submitted:
 
     col1, col2 = st.columns(2)
     with col1:
-        origin = st.selectbox(
-            "From", ["Enter a town or city"] + locations)
+        origin = st.selectbox("From", ["Enter a town or city"] + locations)
 
     with col2:
         destination_options = [city for city in locations if city != origin]
         destination = st.selectbox("To", ["Enter a town or city"] + destination_options)
 
-    date_range = st.date_input(
-        "Leaving", [], min_value=date.today()
-    )
+    date_range = st.date_input("Leaving", [], min_value=date.today())
 
     total_passengers = st.number_input(
         "How many travelers?", min_value=1, max_value=10, value=1
@@ -115,9 +114,7 @@ if not st.session_state.submitted:
         min_price = st.number_input("Min price", min_value=0.0, step=1.0)
 
     with col2:
-        max_price = st.number_input(
-            "Max price", min_value=min_price, step=1.0
-        )
+        max_price = st.number_input("Max price", min_value=min_price, step=1.0)
 
     email = st.text_input("Email", placeholder="you@example.com")
 
@@ -132,7 +129,14 @@ if not st.session_state.submitted:
             st.warning("Please enter a valid email address")
         else:
             save_tracking_config(
-                origin, destination, date_range[0], date_range[1], total_passengers, min_price, max_price, email
+                origin,
+                destination,
+                date_range[0],
+                date_range[1],
+                total_passengers,
+                min_price,
+                max_price,
+                email,
             )
             st.session_state.submitted = True
             st.rerun()
