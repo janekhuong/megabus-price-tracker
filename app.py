@@ -1,9 +1,7 @@
 import streamlit as st
-from datetime import date
-from scraper import find_tickets
-from locations import city_to_id
 import json
-import subprocess
+from datetime import date
+from locations import city_to_id
 
 
 def save_tracking_config(origin, destination, start_date, end_date, passengers, min_price, max_price, email):
@@ -127,16 +125,15 @@ if not st.session_state.submitted:
         if origin == "Enter a town or city":
             st.warning("Please select origin town or city")
         elif destination == "Enter a town or city":
-            st.warning("Please select desitnation town or city")
-        elif not date_range:
-            st.warning("Please enter a date")
-        elif origin == destination:
-            st.warning("Origin and destination must be different.")
+            st.warning("Please select destination town or city")
+        elif len(date_range) != 2:
+            st.warning("Please select a start and end date")
+        elif "@" not in email or "." not in email:
+            st.warning("Please enter a valid email address")
         else:
             save_tracking_config(
                 origin, destination, date_range[0], date_range[1], total_passengers, min_price, max_price, email
             )
-            subprocess.Popen(["python", "scraper_runner.py"])
             st.session_state.submitted = True
             st.rerun()
 else:

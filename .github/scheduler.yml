@@ -1,0 +1,32 @@
+name: Megabus Price Tracker
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # every 2 hours
+  workflow_dispatch:     # allow manual run
+
+jobs:
+  run-tracker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set environment variables
+        run: |
+          echo "SES_SMTP_USER=${{ secrets.SES_SMTP_USER }}" >> $GITHUB_ENV
+          echo "SES_SMTP_PASS=${{ secrets.SES_SMTP_PASS }}" >> $GITHUB_ENV
+
+      - name: Run scraper
+        run: python scraper_runner.py

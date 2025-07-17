@@ -1,6 +1,5 @@
 import requests
 from datetime import datetime, timedelta
-from locations import city_to_id
 
 def find_tickets(
     origin_id, destination_id, start_date, end_date, total_passengers=1, min_price=None, max_price=None
@@ -56,8 +55,8 @@ def find_tickets(
                     results.append(
                         {
                             "date": departure_str,
-                            "departureTime": journey["departureDateTime"],
-                            "arrivalTime": journey["arrivalDateTime"],
+                            "departureTime": journey.get["departureDateTime"],
+                            "arrivalTime": journey.get["arrivalDateTime"],
                             "price": price,
                         }
                     )
