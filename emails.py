@@ -11,7 +11,7 @@ def send_email(to_email, tickets):
     smtp_port = 587
 
     from_email = "janekhuong05@gmail.com"
-    subject = f"🚌 Megabus Price Alert"
+    subject = f"Megabus Price Alert"
 
     body = "Matching tickets found:\n\n"
     for t in tickets:

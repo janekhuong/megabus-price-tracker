@@ -4,16 +4,22 @@ import streamlit as st
 from scraper import find_tickets
 from emails import send_email
 from locations import city_to_id
+from logging import log_event
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate(st.secrets["firebase"])
+    cred = credentials.Certificate(dict(st.secrets["firebase"]))
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
+
 def check_trackers():
     trackers_ref = db.collection("trackers")
-    docs = trackers_ref.stream()
+    docs = list(trackers_ref.stream())
+
+    if not docs:
+        log_event("No trackers to process. Exiting.")
+        return
 
     for doc in docs:
         t = doc.to_dict()

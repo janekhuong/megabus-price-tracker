@@ -62,7 +62,6 @@ st.markdown(
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -107,10 +106,6 @@ if st.session_state.user is None:
 
 
 if not st.session_state.submitted:
-
-    if st.session_state.just_logged_in:
-        st.success(f"Welcome {st.session_state.user['email']}")
-        st.session_state.just_logged_in = False
 
     st.markdown(
         "<h1 style='text-align: center; color: white;'>🚌 Megabus Price Tracker</h1>",
