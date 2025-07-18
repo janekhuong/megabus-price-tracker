@@ -1,11 +1,15 @@
-from google.cloud import firestore
 import streamlit as st
 from datetime import datetime
+import firebase_admin
+from firebase_admin import credentials, firestore
 import pytz
 
 # set up logging
-db = firestore.Client.from_service_account_info(st.secrets["firebase"])
+if not firebase_admin._apps:
+    cred = credentials.Certificate("firebase-key.json")
+    firebase_admin.initialize_app(cred)
 
+db = firestore.client()
 
 def log_event(message, level="INFO"):
     eastern = pytz.timezone("US/Eastern")
