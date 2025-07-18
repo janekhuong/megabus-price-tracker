@@ -2,7 +2,6 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import date
-import time
 from locations import city_to_id
 from auth import login
 

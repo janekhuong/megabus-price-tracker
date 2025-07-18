@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime, timedelta
-from logging import log_event
+from app_logging import log_event
 
 def find_tickets(
     origin_id, destination_id, start_date, end_date, total_passengers=1, min_price=None, max_price=None

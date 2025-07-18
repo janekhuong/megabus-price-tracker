@@ -2,7 +2,7 @@ import smtplib
 import streamlit as st
 from email.mime.text import MIMEText 
 from email.mime.multipart import MIMEMultipart
-from logging import log_event
+from app_logging import log_event
 
 def send_email(to_email, tickets):
     smtp_user = st.secrets["email"]["SES_SMTP_USER"]

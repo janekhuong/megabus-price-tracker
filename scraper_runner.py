@@ -4,7 +4,7 @@ import streamlit as st
 from scraper import find_tickets
 from emails import send_email
 from locations import city_to_id
-from logging import log_event
+from app_logging import log_event
 
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
