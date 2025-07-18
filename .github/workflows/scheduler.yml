@@ -28,9 +28,8 @@ jobs:
           echo "SES_SMTP_USER=${{ secrets.SES_SMTP_USER }}" >> $GITHUB_ENV
           echo "SES_SMTP_PASS=${{ secrets.SES_SMTP_PASS }}" >> $GITHUB_ENV
 
-      - name: Set up Firebase credentials
-        run: |
-          echo "FIREBASE_CREDENTIALS=${{ secrets.FIREBASE_CREDENTIALS }}" >> $GITHUB_ENV
+      - name: Write Firebase credentials to file
+        run: echo '${{ secrets.FIREBASE_CREDENTIALS }}' > firebase-key.json
 
       - name: Run scraper
         run: python scraper_runner.py
