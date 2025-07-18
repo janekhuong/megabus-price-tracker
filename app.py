@@ -1,7 +1,8 @@
 import streamlit as st
 import firebase_admin
-from firebase_admin import credentials, firestore, auth
+from firebase_admin import credentials, firestore
 from datetime import date
+import time
 from locations import city_to_id
 from auth import login
 
@@ -82,26 +83,34 @@ st.markdown(
 if "user" not in st.session_state:
     st.session_state.user = None
 
-if st.session_state.user is None:
-    st.title("🔐 Login")
+if "just_logged_in" not in st.session_state:
+    st.session_state.just_logged_in = False
 
-    email = st.text_input("Email")
+if st.session_state.user is None:
+    st.markdown(
+        "<h1 style='text-align: center; color: white;'>Login</h1>",
+        unsafe_allow_html=True,
+    )
+
+    login_email = st.text_input("Login email")
     password = st.text_input("Password", type="password")
+
     if st.button("Login"):
-        user_data = login(
-            email, password, st.secrets["firebase_api_key"]
-        )
+        user_data = login(login_email, password, st.secrets["firebase_api_key"])
         if user_data:
             st.session_state.user = user_data
-            st.success("Logged in!")
-            st.experimental_rerun()
+            st.session_state.just_logged_in = True
+            st.rerun()
         else:
             st.error("Invalid email or password")
     st.stop()
-else:
-    st.success(f"Welcome {st.session_state.user['email']}")
+
 
 if not st.session_state.submitted:
+
+    if st.session_state.just_logged_in:
+        st.success(f"Welcome {st.session_state.user['email']}")
+        st.session_state.just_logged_in = False
 
     st.markdown(
         "<h1 style='text-align: center; color: white;'>🚌 Megabus Price Tracker</h1>",
@@ -138,7 +147,7 @@ if not st.session_state.submitted:
     with col2:
         max_price = st.number_input("Max price", min_value=min_price, step=1.0)
 
-    email = st.text_input("Email", placeholder="you@example.com")
+    tracking_email = st.text_input("Email", placeholder="you@example.com")
 
     if st.button("Submit", use_container_width=True):
         if origin == "Enter a town or city":
@@ -147,7 +156,7 @@ if not st.session_state.submitted:
             st.warning("Please select destination town or city")
         elif len(date_range) != 2:
             st.warning("Please select a start and end date")
-        elif "@" not in email or "." not in email:
+        elif "@" not in tracking_email or "." not in tracking_email:
             st.warning("Please enter a valid email address")
         else:
             save_tracking_config(
@@ -158,7 +167,7 @@ if not st.session_state.submitted:
                 total_passengers,
                 min_price,
                 max_price,
-                email,
+                tracking_email,
             )
             st.session_state.submitted = True
             st.rerun()
