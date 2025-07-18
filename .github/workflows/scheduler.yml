@@ -30,7 +30,7 @@ jobs:
 
       - name: Set up Firebase credentials
         run: |
-          echo "${{ secrets.FIREBASE_CREDENTIALS }}" > serviceAccountKey.json
+          echo "FIREBASE_CREDENTIALS=${{ secrets.FIREBASE_CREDENTIALS }}" >> $GITHUB_ENV
 
       - name: Run scraper
         run: python scraper_runner.py
