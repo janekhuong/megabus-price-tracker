@@ -1,8 +1,7 @@
-import streamlit as st
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import firebase_admin
 from firebase_admin import credentials, firestore
-import pytz
 
 # set up logging
 if not firebase_admin._apps:
@@ -12,8 +11,8 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 def log_event(message, level="INFO"):
-    eastern = pytz.timezone("US/Eastern")
-    now_et = datetime.now(pytz.utc).astimezone(eastern)
+    eastern = ZoneInfo("America/Toronto")
+    now_et = datetime.now(eastern).date()
 
     db.collection("logs").add(
         {

@@ -56,8 +56,8 @@ def find_tickets(
                     results.append(
                         {
                             "date": departure_str,
-                            "departureTime": journey.get["departureDateTime"],
-                            "arrivalTime": journey.get["arrivalDateTime"],
+                            "departureTime": journey.get("departureDateTime"),
+                            "arrivalTime": journey.get("arrivalDateTime"),
                             "price": price,
                         }
                     )

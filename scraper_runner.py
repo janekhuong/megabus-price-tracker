@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-import streamlit as st
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from scraper import find_tickets
 from emails import send_email
 from locations import city_to_id
@@ -21,9 +22,26 @@ def check_trackers():
         log_event("No trackers to process. Exiting.")
         return
 
+    eastern = ZoneInfo("America/Toronto")
+    today = datetime.now(eastern).date()
+
     for doc in docs:
         t = doc.to_dict()
         doc_id = doc.id
+
+        try:
+            end_date = datetime.strptime(t["end_date"], "%Y-%m-%d").date()
+            if end_date < today:
+                trackers_ref.document(doc_id).delete()
+                log_event(
+                    f"Deleted expired tracker ending on {t['end_date']} for {t['email']}"
+                )
+                continue
+        except Exception as e:
+            log_event(
+                f"Error parsing date or deleting expired tracker: {e}", level="ERROR"
+            )
+            continue
 
         tickets = find_tickets(
             origin_id=city_to_id[t["origin"]],
@@ -38,3 +56,4 @@ def check_trackers():
         if tickets:
             send_email(t["email"], tickets)
             trackers_ref.document(doc_id).delete()
+            log_event(f"Sent email and deleted matched tracker for {t['email']}")
