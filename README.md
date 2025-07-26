@@ -25,12 +25,12 @@ Link: https://jane-megabus-scraper.streamlit.app/
 
 ## 🛠 Tech Stack
 
-- **Frontend**: Streamlit 
-- **Database**: Firebase Firestore  
-- **Authentication**: Firebase Auth  
-- **Email Service**: AWS SES  
-- **Automation**: GitHub Actions  
-- **Backend Logic**: Python
+- **Backend Logic**: ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+- **Frontend**: ![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white) 
+- **Database**: ![Firebase Firestore](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
+- **Authentication**: ![Firebase Auth](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+- **Email Service**: ![AWS SES](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+- **Automation**: ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)  
 
 
 
