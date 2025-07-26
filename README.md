@@ -9,7 +9,7 @@ Megabus Price Tracker is a web app that monitors Megabus ticket prices and sends
 
 Link: https://jane-megabus-scraper.streamlit.app/
 
-⚠️ Disclaimer: Scraping the Megabus website goes against their terms and conditions :( so therefore this project is for educational purposes only and not available for public use.
+⚠️ Disclaimer: Scraping the Megabus website goes against their terms and conditions, so therefore this project is for educational purposes only and not available for public use.
 
 ---
 
