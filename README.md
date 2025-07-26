@@ -1,10 +1,10 @@
 # Megabus Price Tracker
 
 <p align="center">
-  <img src="assets/app-screenshot1" alt="Screenshot 1" />
-</p>
-<p align="center">
-  <img src="assets/app-screenshot2.png" alt="Screenshot 2" />
+  <div style="display: flex; justify-content: center; gap: 20px;">
+    <img src="assets/app-screenshot1.png" alt="Screenshot 1" width="45%" />
+    <img src="assets/app-screenshot2.png" alt="Screenshot 2" width="45%" />
+  </div>
 </p>
 
 Megabus Price Tracker is a web app that monitors Megabus ticket prices and sends you an email alert when prices match your preferred criteria. 
