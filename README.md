@@ -1,7 +1,7 @@
 # Megabus Price Tracker
 
 <p align="center">
-    <img src="assets/app-screenshot3.png" alt="Screenshot 2" width="50%" />
+    <img src="assets/app-screenshot3.png" alt="App Screenshot" />
   </div>
 </p>
 
