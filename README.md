@@ -1,9 +1,7 @@
 # Megabus Price Tracker
 
 <p align="center">
-  <div style="display: flex; justify-content: center; gap: 20px;">
-    <img src="assets/app-screenshot1.png" alt="Screenshot 1" width="45%" />
-    <img src="assets/app-screenshot2.png" alt="Screenshot 2" width="45%" />
+    <img src="assets/app-screenshot2.png" alt="Screenshot 2" width="50%" />
   </div>
 </p>
 
